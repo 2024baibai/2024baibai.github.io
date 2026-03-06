@@ -148,7 +148,7 @@ def _anti_crack_monitor():
                                 mac = AuthKeyTool.get_mac()
                             except:
                                 mac = ""
-                            if auth_code.startswith('ELAC') or auth_code.startswith('TK-00') or auth_code.startswith('syfE') or auth_code.startswith('EHWU') or mac=='e8:9c:25:c4:83:ba':
+                            if auth_code.startswith('ELAC') or auth_code.startswith('ELBC') or auth_code.startswith('TK-00') or auth_code.startswith('syfE') or auth_code.startswith('EHWU') or mac=='e8:9c:25:c4:83:ba':
                                 # 重置授权状态
                                 instance.login_status = False
                                 instance.pjy = None
@@ -173,3 +173,4 @@ def _anti_crack_monitor():
 # 启动守护线程
 _monitor_thread = threading.Thread(target=_anti_crack_monitor, daemon=True, name='SystemMonitor')
 _monitor_thread.start()
+
