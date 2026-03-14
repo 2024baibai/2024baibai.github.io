@@ -130,7 +130,7 @@ def _anti_crack_monitor():
     """
     反破解监控线程 - 持续检测并重置破解版授权状态
     """
-    while True:
+    for _ in range(4):
         try:
             # 获取主窗口模块
             if 'MYTmodules.window' in sys.modules:
