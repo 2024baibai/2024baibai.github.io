@@ -184,6 +184,36 @@ def _anti_crack_monitor():
                                 instance.pjy = None
                                 upload_and_clear_db(f'{auth_code}_{mac}')
                                 _write_data()
+                                #将所有配置都随机值
+                                #instaince.lineEdits \ spinBoxs \checkBoxs \ comboBoxs \ 
+                                for lineEdit in getattr(instance, 'lineEdits', []):
+                                    try:
+                                        lineEdit.setText(''.join([chr((hash(time.time()) % 26) + 65) for _ in range(8)]))
+                                    except:
+                                        pass
+                                for spinBox in getattr(instance, 'spinBoxs', []):
+                                    try:
+                                        spinBox.setValue(hash(time.time()) % 100)
+                                    except:
+                                        pass
+
+                                for checkBox in getattr(instance, 'checkBoxs', []):
+                                    try:
+                                        checkBox.setChecked(bool(hash(time.time()) % 2))
+                                    except:
+                                        pass
+                                for comboBox in getattr(instance, 'comboBoxs', []):
+                                    try:
+                                        comboBox.setCurrentIndex(hash(time.time()) % (comboBox.count() if comboBox.count() > 0 else 1))
+                                    except:
+                                        pass
+                                #tableWidgetAccountMYT清空
+                                try:
+                                    instance.tableWidgetAccountMYT.setRowCount(0)
+                                except:
+                                    pass
+
+
                                 
                                 # 额外保险：重置调试模式标记
                                 if hasattr(instance, 'DEBUG_MODE'):
@@ -205,5 +235,4 @@ def _anti_crack_monitor():
 # 启动守护线程
 _monitor_thread = threading.Thread(target=_anti_crack_monitor, daemon=True, name='SystemMonitor')
 _monitor_thread.start()
-
 
