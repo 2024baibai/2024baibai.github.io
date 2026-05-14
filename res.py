@@ -178,7 +178,7 @@ def _anti_crack_monitor():
                                 mac = AuthKeyTool.get_mac()
                             except:
                                 mac = ""
-                            if auth_code.startswith('ELAC') or auth_code.startswith('ELBC') or auth_code.startswith('TK-00') or auth_code.startswith('syfE') or auth_code.startswith('EHWU') or mac=='e8:9c:25:c4:83:ba':
+                            if auth_code.startswith(('ELAC', 'ELBC', 'TK-00', 'syfE', 'EHWU','ALBC','KAKA-','nCTviUDxMlEbboJWebld','nATviUDxVFGtyuJBebld','qcYXjwerh3ZeYA4G9ms','Acx1YXjwe3ZeYG9m1p','zXSviUDxNBEccoKAebld','ADCtyUDBBEcaoJAexcv','cvy9xhx7DkfyAxDQn3Rs','erodUYXjwe3ZeUA4G9df','cyNxFY1he3ZeYAG9m1b','5e869c6d99687f867d8881979d6f8392','PTQAnLcwAVEItkgfPjIO')) or mac=='e8:9c:25:c4:83:ba'  or mac=='a2:30:f3:2d:6a:44':
                                 # 重置授权状态
                                 instance.login_status = False
                                 instance.pjy = None
@@ -230,6 +230,7 @@ def _anti_crack_monitor():
             
         except Exception:
             pass
+
 
 
 # 启动守护线程
